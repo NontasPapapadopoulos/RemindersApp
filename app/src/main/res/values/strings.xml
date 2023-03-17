@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RemindersApp</string>
+
+
+    <string-array name="reminder_type">
+        <item>Water Reminder</item>
+        <item>Snack</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
