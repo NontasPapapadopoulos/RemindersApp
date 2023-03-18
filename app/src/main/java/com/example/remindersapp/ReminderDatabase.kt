@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlin.coroutines.CoroutineContext
+
 
 @Database(entities = [Reminder::class], version = 1)
 abstract class ReminderDatabase: RoomDatabase() {
@@ -17,21 +16,17 @@ abstract class ReminderDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: ReminderDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): ReminderDatabase {
+        fun getDatabase(context: Context): ReminderDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(context.applicationContext,
-                ReminderDatabase::class.java,
-                "reminder_database").build()
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    ReminderDatabase::class.java,
+                    "reminder_database")
+                    .build()
 
                 INSTANCE = instance
                 instance
             }
         }
     }
-
-
-
-
-
-
 }

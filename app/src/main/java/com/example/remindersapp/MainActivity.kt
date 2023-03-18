@@ -2,21 +2,17 @@ package com.example.remindersapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.activity.viewModels
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.remindersapp.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    lateinit var reminderViewModel: ReminderViewModel
+    lateinit var remindersList: ArrayList<Reminder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +20,21 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        displayAddReminderFragment()
-
+        reminderViewModel = ViewModelProvider(this).get(ReminderViewModel::class.java)
+        setRemindersList()
     }
+
+    private fun setRemindersList() {
+        reminderViewModel.allReminders.observe(this,
+            androidx.lifecycle.Observer { list ->
+                list?.let {
+                    remindersList = list as ArrayList<Reminder>
+                    displayAddReminderFragment()
+
+                }
+            })
+    }
+
 
     private fun displayAddReminderFragment() {
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -37,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
+
+
+
+
 
 
 

@@ -1,27 +1,24 @@
 package com.example.remindersapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import com.example.remindersapp.TimeUtil.Companion.parseTimeFromTimePicker
 import com.example.remindersapp.databinding.FragmentAddReminderBinding
-import com.example.remindersapp.databinding.FragmentReminderBinding
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
+import java.util.*
 
-//@AndroidEntryPoint
+
 class AddReminderFragment : Fragment() {
 
     private lateinit var binding: FragmentAddReminderBinding
-   // val reminderViewModel: ReminderViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -32,6 +29,8 @@ class AddReminderFragment : Fragment() {
         binding = FragmentAddReminderBinding.inflate(inflater, container, false )
 
 
+        setTimePickerCurrentTime()
+        modifyTimePicker()
 
         setSpinnerAdapter(binding.reminderTypeSpinner, R.array.reminder_type)
         showRemindersButton()
@@ -55,23 +54,50 @@ class AddReminderFragment : Fragment() {
     }
 
     private fun showRemindersButton() {
-//        val reminders = reminderViewModel.allReminders.value
-//        if (reminders!!.isEmpty())
-//            binding.showRemindersButton.visibility = View.GONE
-//        else
-//            binding.showRemindersButton.visibility = View.VISIBLE
+        if ((activity as MainActivity).remindersList.isEmpty())
+            binding.showRemindersButton.visibility = View.GONE
+        else
+            binding.showRemindersButton.visibility = View.VISIBLE
     }
 
     private fun attachListeners() {
+        showRemindersFragment()
+
+        binding.addReminderButton.setOnClickListener {
+            val hour = binding.timePicker.hour
+            val minute = binding.timePicker.minute
+            val type = binding.reminderTypeSpinner.selectedItem.toString()
+
+            val timeReminder = parseTimeFromTimePicker(hour, minute)
+            val reminder = Reminder(timeReminder, type)
+
+            (activity as MainActivity).reminderViewModel.insert(reminder)
+
+        }
+    }
+
+    private fun setTimePickerCurrentTime() {
+        binding.timePicker.hour = Calendar.getInstance().get(Calendar.HOUR)
+        binding.timePicker.minute = Calendar.getInstance().get(Calendar.MINUTE)
+    }
+
+    private fun modifyTimePicker() {
+        binding.timePicker.setIs24HourView(true)
+        // digital mode -> android:timePickerMode="spinner"
+
+        //binding.timePicker.keyboardNavigationClusterSearch().visibility = GONE
+    }
+
+
+    private fun showRemindersFragment() {
         binding.showRemindersButton.setOnClickListener {
             val fragmentManager: FragmentManager = parentFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment = ReminderFragment()
+            val fragment = RemindersFragment()
 
             fragmentTransaction.replace(R.id.frame, fragment)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
     }
-
 }

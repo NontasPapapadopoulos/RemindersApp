@@ -1,7 +1,7 @@
 package com.example.remindersapp
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReminderDAO {
@@ -19,5 +19,6 @@ interface ReminderDAO {
     suspend fun deleteAllReminders()
 
     @Query("SELECT * FROM reminder_table ORDER BY id ASC")
-    fun getAllReminders(): Flow<List<Reminder>>
+    fun getAllReminders(): LiveData<List<Reminder>>
+
 }

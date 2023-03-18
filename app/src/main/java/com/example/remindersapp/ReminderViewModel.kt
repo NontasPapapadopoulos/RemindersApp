@@ -1,17 +1,24 @@
 package com.example.remindersapp
 
+
+import android.app.Application
 import androidx.lifecycle.*
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-
-@HiltViewModel
-class ReminderViewModel @Inject constructor (
-    private val repository: ReminderRepository): ViewModel() {
 
 
-    val allReminders: LiveData<List<Reminder>> = repository.allReminders.asLiveData()
+class ReminderViewModel (application: Application): AndroidViewModel(application) {
+
+
+    val allReminders : LiveData<List<Reminder>>
+    private val repository: ReminderRepository
+
+    init {
+        val dao = ReminderDatabase.getDatabase(application).getReminderDao()
+        repository = ReminderRepository(dao)
+        allReminders = repository.allReminders
+    }
+
 
     fun insert(reminder: Reminder) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(reminder)
@@ -25,17 +32,8 @@ class ReminderViewModel @Inject constructor (
         repository.update(reminder)
     }
 
-    fun deleteAllNotes() = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteAllReminders() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAllReminders()
     }
 }
 
-//class ReminderViewModelFactory(private val repository: ReminderRepository): ViewModelProvider.Factory {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(ReminderViewModel::class.java))
-//            return ReminderViewModel(repository) as T
-//        else
-//            throw java.lang.IllegalArgumentException("uknown view model")
-//    }
-
-//}

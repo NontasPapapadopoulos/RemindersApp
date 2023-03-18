@@ -41,16 +41,24 @@
         android:layout_marginTop="15dp"
         android:spinnerMode="dropdown"/>
 
+
     <TimePicker
         android:id="@+id/timePicker"
-        android:layout_width="300dp"
-        android:layout_height="350dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+
+        android:amPmTextColor="#FFEB3B"
+        android:headerBackground="@color/cardview_dark_background"
+        android:numbersBackgroundColor="@color/cardview_dark_background"
+        android:numbersInnerTextColor="#FFEB3B"
+        android:numbersSelectorColor="#F44336"
+        android:descendantFocusability="blocksDescendants"
+
+        android:numbersTextColor="#FFEB3B"
         app:layout_constraintTop_toBottomOf="@+id/reminderTypeSpinner"
-        android:layout_marginTop="40dp"/>
-
-
+        tools:layout_editor_absoluteX="6dp" />
+    <!--        android:timePickerMode="spinner"-->
     <Button
         android:id="@+id/addReminderButton"
         android:text="ADD Reminder"

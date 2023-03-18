@@ -3,7 +3,7 @@
 
 
     <string-array name="reminder_type">
-        <item>Water Reminder</item>
+        <item>Water</item>
         <item>Snack</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
