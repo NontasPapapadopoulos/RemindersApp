@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RemindersFragment : Fragment() {
+class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var deleteButton: Button
@@ -34,7 +34,7 @@ class RemindersFragment : Fragment() {
 
 
         (activity as MainActivity).reminderViewModel.allReminders.observe(activity as MainActivity, Observer<List<Reminder>> { list ->
-            reminderAdapter = ReminderAdapter(list as ArrayList<Reminder>)
+            reminderAdapter = ReminderAdapter(list as ArrayList<Reminder>, this)
             recyclerView.adapter = reminderAdapter
 
         })
@@ -82,9 +82,14 @@ class RemindersFragment : Fragment() {
         fragment.arguments = bundle
 
 
-        fragmentTransaction.add(R.id.frame, fragment)
+        fragmentTransaction.replace(R.id.frame, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+    }
+
+    override fun onItemClick(position: Int) {
+        val reminder = reminderAdapter.getReminder(position)
+        openUpdateReminderFragment(reminder)
     }
 
 

@@ -9,33 +9,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class ReminderAdapter(private var reminders: ArrayList<Reminder>)
+class ReminderAdapter(private var reminders: ArrayList<Reminder>,
+                      private val listener: OnItemClickListener)
                 : RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder>() {
 
-    interface OnReminderClickListener {
-        fun onReminderClick(position: Int)
-    }
 
-    private lateinit var mListener: OnReminderClickListener
-
-    fun setOnReminderClickListener(listener: OnReminderClickListener) {
-        mListener = listener
-    }
-
-    class ReminderViewHolder(itemView: View, listener: OnReminderClickListener): RecyclerView.ViewHolder(itemView) {
-        val reminderTimeTextView: TextView = itemView.findViewById(R.id.reminderTimeTextView)
-        val reminderTypeTextView: TextView = itemView.findViewById(R.id.reminderTypeTextView)
-        @SuppressLint("UseSwitchCompatOrMaterialCode")
-        val isReminderActiveSwitch: Switch = itemView.findViewById(R.id.isReminderActiveSwitch)
-        val cardView: CardView = itemView.findViewById(R.id.cardView)
-
-        init {
-            itemView.setOnClickListener{
-                listener.onReminderClick(absoluteAdapterPosition )
-            }
-        }
-
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -43,7 +21,7 @@ class ReminderAdapter(private var reminders: ArrayList<Reminder>)
                                         parent,
                                         false)
 
-        return  ReminderViewHolder(view, mListener)
+        return  ReminderViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -56,25 +34,6 @@ class ReminderAdapter(private var reminders: ArrayList<Reminder>)
         holder.reminderTypeTextView.text = reminder.type
         holder.isReminderActiveSwitch.isChecked = reminder.isActive
 
-//        holder.cardView.setOnClickListener {
-//            // get adapter position
-//            val position = holder.absoluteAdapterPosition
-//            // call listener
-//            mListener.onReminderClick(position)
-//            // update position
-//           // selectedPosition = position
-//            // notify
-//            notifyDataSetChanged()
-//        }
-
-
-        holder.cardView.setOnClickListener {
-        }
-
-        holder.isReminderActiveSwitch.setOnClickListener {
-           // activity.reminderViewModel.update(reminder)
-        }
-
     }
 
     fun getReminder(position: Int) : Reminder {
@@ -82,5 +41,27 @@ class ReminderAdapter(private var reminders: ArrayList<Reminder>)
     }
 
 
+    inner class ReminderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        val reminderTimeTextView: TextView = itemView.findViewById(R.id.reminderTimeTextView)
+        val reminderTypeTextView: TextView = itemView.findViewById(R.id.reminderTypeTextView)
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        val isReminderActiveSwitch: Switch = itemView.findViewById(R.id.isReminderActiveSwitch)
+        val cardView: CardView = itemView.findViewById(R.id.cardView)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            val position = bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION)
+                listener.onItemClick(position)
+        }
+
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.remindersapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.remindersapp.databinding.FragmentAddReminderBinding
@@ -18,6 +20,7 @@ class UpdateReminderFragment : Fragment() {
 
     private lateinit var binding: FragmentUpdateReminderBinding
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,10 +28,13 @@ class UpdateReminderFragment : Fragment() {
     ): View? {
         binding = FragmentUpdateReminderBinding.inflate(inflater, container, false )
 
-        setTimePickerCurrentTime()
+        val reminder = arguments?.getSerializable("reminder") as Reminder
+
+        setTimePickerReminderTime(reminder)
         modifyTimePicker()
 
         setSpinnerAdapter(binding.reminderTypeSpinner, R.array.reminder_type)
+        setSpinnerValue(reminder)
         attachListeners()
         return binding.root
 
@@ -45,6 +51,13 @@ class UpdateReminderFragment : Fragment() {
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+    }
+
+    private fun setSpinnerValue(reminder: Reminder) {
+        if (reminder.type == "Water")
+            binding.reminderTypeSpinner.setSelection(0)
+        else
+            binding.reminderTypeSpinner.setSelection(1)
     }
 
     private fun attachListeners() {
@@ -65,9 +78,9 @@ class UpdateReminderFragment : Fragment() {
         }
     }
 
-    private fun setTimePickerCurrentTime() {
-        binding.timePicker.hour = Calendar.getInstance().get(Calendar.HOUR)
-        binding.timePicker.minute = Calendar.getInstance().get(Calendar.MINUTE)
+    private fun setTimePickerReminderTime(reminder: Reminder) {
+        binding.timePicker.hour = reminder.time.split(":")[0].toInt()
+        binding.timePicker.minute = reminder.time.split(":")[1].toInt()
     }
 
     private fun modifyTimePicker() {
