@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     lateinit var reminderViewModel: ReminderViewModel
-    lateinit var remindersList: ArrayList<Reminder>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,19 +21,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         reminderViewModel = ViewModelProvider(this).get(ReminderViewModel::class.java)
-        setRemindersList()
+        displayAddReminderFragment()
+
     }
 
-    private fun setRemindersList() {
-        reminderViewModel.allReminders.observe(this,
-            androidx.lifecycle.Observer { list ->
-                list?.let {
-                    remindersList = list as ArrayList<Reminder>
-                    displayAddReminderFragment()
-
-                }
-            })
-    }
+//    private fun setRemindersList() {
+//        reminderViewModel.allReminders.observe(this,
+//            androidx.lifecycle.Observer { list ->
+//                list?.let {
+//                    displayAddReminderFragment()
+//
+//                }
+//            })
+//    }
 
 
     private fun displayAddReminderFragment() {
@@ -45,16 +45,6 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
-
-
-
-
-
-
-
-
-
-
 
 }
 

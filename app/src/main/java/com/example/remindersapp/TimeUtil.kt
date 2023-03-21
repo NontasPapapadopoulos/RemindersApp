@@ -20,7 +20,15 @@ class TimeUtil {
         }
 
         fun parseTimeFromTimePicker(hour: Int, minute: Int): String {
-            return "$hour:$minute"
+            var hour24 = hour.toString()
+            var minute24 = minute.toString()
+            if (hour < 10)
+                hour24 = "0$hour"
+
+            if (minute < 10)
+                minute24 = "0$minute"
+
+            return "$hour24:$minute24"
         }
     }
 }

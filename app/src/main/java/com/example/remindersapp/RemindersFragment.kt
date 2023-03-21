@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,10 +32,12 @@ class RemindersFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        reminderAdapter = ReminderAdapter((activity as MainActivity).remindersList)
 
-        recyclerView.adapter = reminderAdapter
+        (activity as MainActivity).reminderViewModel.allReminders.observe(activity as MainActivity, Observer<List<Reminder>> { list ->
+            reminderAdapter = ReminderAdapter(list as ArrayList<Reminder>)
+            recyclerView.adapter = reminderAdapter
 
+        })
 
 
         deleteOneReminder()
@@ -65,5 +70,22 @@ class RemindersFragment : Fragment() {
             (activity as MainActivity).reminderViewModel.deleteAllReminders()
         }
     }
+
+
+    private fun openUpdateReminderFragment(reminder: Reminder) {
+        val fragmentManager: FragmentManager = parentFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val fragment = UpdateReminderFragment()
+
+        val bundle = Bundle()
+        bundle.putSerializable("reminder", reminder )
+        fragment.arguments = bundle
+
+
+        fragmentTransaction.add(R.id.frame, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
 
 }

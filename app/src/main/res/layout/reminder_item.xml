@@ -51,26 +51,18 @@
 
 
             <Switch
-                android:id="@+id/deactivateReminderSwitch"
+                android:id="@+id/isReminderActiveSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="150dp"
                 android:shadowColor="#FFEB3B"
                 android:textColor="#FFEB3B"
-                android:enabled="true"
-                android:text="Deactivate"
+                android:text="Is Active"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 
-            <CheckBox
-                android:visibility="gone"
-                android:id="@+id/deleteCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="#FFEB3B"
-                android:text="delete" />
+
 
         </LinearLayout>
 
