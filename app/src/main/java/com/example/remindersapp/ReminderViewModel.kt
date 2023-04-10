@@ -1,7 +1,10 @@
 package com.example.remindersapp
 
 
+import android.annotation.SuppressLint
 import android.app.Application
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class ReminderViewModel (application: Application): AndroidViewModel(application) {
 
-
+    private val notificationHandler = NotificationHandler(application)
     val allReminders : LiveData<List<Reminder>>
     private val repository: ReminderRepository
 
@@ -17,6 +20,15 @@ class ReminderViewModel (application: Application): AndroidViewModel(application
         val dao = ReminderDatabase.getDatabase(application).getReminderDao()
         repository = ReminderRepository(dao)
         allReminders = repository.allReminders
+        notificationHandler.createNotificationChannel()
+
+        if (allReminders.value != null && allReminders.value!!.isEmpty()) {
+            for (reminder in allReminders.value!!) {
+                notificationHandler.checkNotifications(reminder.id)
+            }
+        }
+
+
     }
 
 
@@ -24,8 +36,15 @@ class ReminderViewModel (application: Application): AndroidViewModel(application
         repository.insert(reminder)
     }
 
+    @SuppressLint("MissingPermission")
+    fun registerNotification(reminder: Reminder) {
+        notificationHandler.registerNotification(reminder)
+    }
+
     fun delete(reminder: Reminder) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(reminder)
+        notificationHandler.deleteNotification(reminder)
+
     }
 
     fun update(reminder: Reminder) = viewModelScope.launch(Dispatchers.IO) {
@@ -34,6 +53,7 @@ class ReminderViewModel (application: Application): AndroidViewModel(application
 
     fun deleteAllReminders() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAllReminders()
+        notificationHandler.deleteAllNotifications(allReminders.value as ArrayList<Reminder>)
     }
 }
 

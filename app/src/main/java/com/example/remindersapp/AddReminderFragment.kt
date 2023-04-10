@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -27,7 +28,7 @@ class AddReminderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddReminderBinding.inflate(inflater, container, false )
+        binding = FragmentAddReminderBinding.inflate(inflater, container, false)
 
 
         setTimePickerCurrentTime()
@@ -55,10 +56,13 @@ class AddReminderFragment : Fragment() {
     }
 
     private fun showRemindersButton() {
-//        if ((activity as MainActivity).remindersList.isEmpty())
-//            binding.showRemindersButton.visibility = GONE
-//        else
-            binding.showRemindersButton.visibility = VISIBLE
+        (activity as MainActivity).reminderViewModel.allReminders.observe(
+            activity as MainActivity, androidx.lifecycle.Observer{
+               if (it.isEmpty())
+                   binding.showRemindersButton.visibility = GONE
+               else
+                   binding.showRemindersButton.visibility = VISIBLE
+            })
     }
 
     private fun attachListeners() {
@@ -76,12 +80,12 @@ class AddReminderFragment : Fragment() {
             val reminder = Reminder(timeReminder, type, true)
 
             (activity as MainActivity).reminderViewModel.insert(reminder)
-
+            (activity as MainActivity).reminderViewModel.registerNotification(reminder)
         }
     }
 
     private fun setTimePickerCurrentTime() {
-        binding.timePicker.hour = Calendar.getInstance().get(Calendar.HOUR)
+        binding.timePicker.hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         binding.timePicker.minute = Calendar.getInstance().get(Calendar.MINUTE)
     }
 

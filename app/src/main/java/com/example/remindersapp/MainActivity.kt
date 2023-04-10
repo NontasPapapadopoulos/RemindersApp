@@ -20,20 +20,11 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        reminderViewModel = ViewModelProvider(this).get(ReminderViewModel::class.java)
+        reminderViewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
         displayAddReminderFragment()
 
     }
 
-//    private fun setRemindersList() {
-//        reminderViewModel.allReminders.observe(this,
-//            androidx.lifecycle.Observer { list ->
-//                list?.let {
-//                    displayAddReminderFragment()
-//
-//                }
-//            })
-//    }
 
 
     private fun displayAddReminderFragment() {

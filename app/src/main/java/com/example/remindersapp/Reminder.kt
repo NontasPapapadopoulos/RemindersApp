@@ -11,3 +11,9 @@ data class Reminder(val time: String,
     @PrimaryKey(autoGenerate = true)
     var id = 0
 }
+
+
+enum class ReminderType {
+    WATER,
+    SNACK
+}

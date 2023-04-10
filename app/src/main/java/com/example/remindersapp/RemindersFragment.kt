@@ -24,7 +24,6 @@ class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var deleteButton: Button
     private lateinit var reminderAdapter: ReminderAdapter
-    private lateinit var remindersList: ArrayList<Reminder>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +34,6 @@ class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
         this.deleteButton = view.findViewById(R.id.deleteButton)
 
         initRecyclerView()
-
-
 
         deleteOneReminder()
         deleteAllReminders()
@@ -75,9 +72,13 @@ class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 (activity as MainActivity).reminderViewModel.delete(reminderAdapter.getReminder(viewHolder.absoluteAdapterPosition))
                 Toast.makeText(context, "Reminder deleted", Toast.LENGTH_SHORT).show()
+
             }
 
+
         }).attachToRecyclerView(recyclerView)
+
+
     }
 
     private fun deleteAllReminders() {

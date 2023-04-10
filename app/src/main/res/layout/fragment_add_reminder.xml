@@ -23,6 +23,7 @@
         android:id="@+id/remindersTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#FFEB3B"
         android:text="Add a New Reminder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
