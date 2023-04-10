@@ -30,8 +30,6 @@ class NotificationHandler(val context: Context?) {
 
             notificationManager = context!!.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-
-
         }
     }
 
@@ -62,7 +60,14 @@ class NotificationHandler(val context: Context?) {
         val intent = Intent(context, NotificationBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, reminder.id, intent, 0)
         alarmManager.cancel(pendingIntent)
-        Toast.makeText(context,"Alarm Canceled", Toast.LENGTH_SHORT).show()
+        notificationManager.cancel(reminder.id)
+
+        //Toast.makeText(context,"Alarm Canceled", Toast.LENGTH_SHORT).show()
+    }
+
+    fun updateNotification(reminder: Reminder) {
+        deleteNotification(reminder)
+        registerNotification(reminder)
     }
 
     fun deleteAllNotifications(reminders: ArrayList<Reminder>) {
@@ -71,8 +76,9 @@ class NotificationHandler(val context: Context?) {
                 val intent = Intent(context, NotificationBroadcastReceiver::class.java)
                 val pendingIntent = PendingIntent.getBroadcast(context, reminder.id, intent, 0)
                 alarmManager.cancel(pendingIntent)
+                notificationManager.cancel(reminder.id)
             }
-            Toast.makeText(context,"All Alarms Canceled", Toast.LENGTH_SHORT).show()
+         //   Toast.makeText(context,"All Alarms Canceled", Toast.LENGTH_SHORT).show()
         }
     }
 

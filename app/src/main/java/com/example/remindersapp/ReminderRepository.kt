@@ -12,6 +12,10 @@ class ReminderRepository (private val reminderDAO: ReminderDAO) {
         reminderDAO.insert(reminder)
     }
 
+    suspend fun getLastReminder(): Reminder {
+       return  reminderDAO.getLastReminder()
+    }
+
     suspend fun update(reminder: Reminder) {
         reminderDAO.update(reminder)
     }

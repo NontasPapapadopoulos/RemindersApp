@@ -80,7 +80,6 @@ class AddReminderFragment : Fragment() {
             val reminder = Reminder(timeReminder, type, true)
 
             (activity as MainActivity).reminderViewModel.insert(reminder)
-            (activity as MainActivity).reminderViewModel.registerNotification(reminder)
         }
     }
 

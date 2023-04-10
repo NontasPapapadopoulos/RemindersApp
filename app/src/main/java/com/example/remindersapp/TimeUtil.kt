@@ -41,6 +41,7 @@ class TimeUtil {
                 timeInMillis = System.currentTimeMillis()
                 set(Calendar.HOUR_OF_DAY, getHourIntegerFormat(reminder.time))
                 set(Calendar.MINUTE, getMinutesIntegerFormat(reminder.time))
+                set(Calendar.SECOND, 0)
             }
         }
     }

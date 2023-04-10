@@ -21,4 +21,7 @@ interface ReminderDAO {
     @Query("SELECT * FROM reminder_table ORDER BY id ASC")
     fun getAllReminders(): LiveData<List<Reminder>>
 
+    @Query("SELECT * FROM reminder_table WHERE id =  (SELECT MAX(id) FROM reminder_table)")
+    suspend fun getLastReminder(): Reminder
+
 }

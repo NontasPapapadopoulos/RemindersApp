@@ -21,25 +21,15 @@ class ReminderViewModel (application: Application): AndroidViewModel(application
         repository = ReminderRepository(dao)
         allReminders = repository.allReminders
         notificationHandler.createNotificationChannel()
-
-        if (allReminders.value != null && allReminders.value!!.isEmpty()) {
-            for (reminder in allReminders.value!!) {
-                notificationHandler.checkNotifications(reminder.id)
-            }
-        }
-
-
     }
 
 
     fun insert(reminder: Reminder) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(reminder)
+        val newReminder = repository.getLastReminder()
+        notificationHandler.registerNotification(newReminder)
     }
 
-    @SuppressLint("MissingPermission")
-    fun registerNotification(reminder: Reminder) {
-        notificationHandler.registerNotification(reminder)
-    }
 
     fun delete(reminder: Reminder) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(reminder)
