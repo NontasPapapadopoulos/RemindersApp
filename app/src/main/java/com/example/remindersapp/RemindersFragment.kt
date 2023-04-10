@@ -14,6 +14,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
@@ -21,6 +24,7 @@ class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var deleteButton: Button
     private lateinit var reminderAdapter: ReminderAdapter
+    private lateinit var remindersList: ArrayList<Reminder>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,19 +34,30 @@ class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
         this.recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         this.deleteButton = view.findViewById(R.id.deleteButton)
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        initRecyclerView()
 
-
-        (activity as MainActivity).reminderViewModel.allReminders.observe(activity as MainActivity, Observer<List<Reminder>> { list ->
-            reminderAdapter = ReminderAdapter(list as ArrayList<Reminder>, this)
-            recyclerView.adapter = reminderAdapter
-
-        })
 
 
         deleteOneReminder()
         deleteAllReminders()
         return view
+    }
+
+    private fun initRecyclerView() {
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        reminderAdapter = ReminderAdapter(this)
+        recyclerView.adapter = reminderAdapter
+
+        displayRemindersList()
+    }
+
+    private fun displayRemindersList() {
+        (activity as MainActivity).reminderViewModel.allReminders.observe(
+            activity as MainActivity,
+            Observer<List<Reminder>> {
+                reminderAdapter.setRemindersList(it as ArrayList<Reminder>)
+                reminderAdapter.notifyDataSetChanged()
+            })
     }
 
 

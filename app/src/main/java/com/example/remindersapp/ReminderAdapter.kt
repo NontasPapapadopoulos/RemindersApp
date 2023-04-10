@@ -9,10 +9,15 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class ReminderAdapter(private var reminders: ArrayList<Reminder>,
-                      private val listener: OnItemClickListener)
+class ReminderAdapter(private val listener: OnItemClickListener)
                 : RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder>() {
 
+    private var reminders = ArrayList<Reminder>()
+
+    fun setRemindersList(reminderList: ArrayList<Reminder>) {
+        reminders.clear()
+        reminders.addAll(reminderList)
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {

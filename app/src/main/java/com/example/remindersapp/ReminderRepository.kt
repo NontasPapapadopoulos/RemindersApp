@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 
 class ReminderRepository (private val reminderDAO: ReminderDAO) {
 
-    val allReminders: LiveData<List<Reminder>> = reminderDAO.getAllReminders()
+    val allReminders = reminderDAO.getAllReminders()
 
     suspend fun insert(reminder: Reminder) {
         reminderDAO.insert(reminder)
