@@ -9,6 +9,6 @@ import javax.inject.Singleton
     ViewModelModule::class,
     RepositoryModule::class
 ])
-interface AppComponent {
-    fun appComponent(): AppComponent
+interface RemindersComponent {
+    fun inject(mainActivity: MainActivity)
 }

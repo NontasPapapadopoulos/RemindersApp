@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        (application as RemindersApplication).remindersComponent.inject(this)
+
         reminderViewModel = ViewModelProvider(this, factory)[ReminderViewModel::class.java]
         displayAddReminderFragment()
 

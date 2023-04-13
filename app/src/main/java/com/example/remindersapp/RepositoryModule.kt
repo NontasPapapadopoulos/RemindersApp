@@ -1,20 +1,28 @@
 package com.example.remindersapp
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
+
 
 @Module
 class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesReminderDataBase(context: Context): RoomDatabase.Builder<ReminderDatabase> {
-        return Room.databaseBuilder(context, ReminderDatabase::class.java, "reminder_database")
+    fun providesContext(): Context {
+        return Application() as Context
+    }
+
+
+    @Provides
+    @Singleton
+    fun providesReminderDataBase(context: Context): ReminderDatabase {
+        return Room.databaseBuilder(context, ReminderDatabase::class.java, "reminder_database").build()
     }
 
     @Provides
