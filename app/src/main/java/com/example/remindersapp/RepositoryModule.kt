@@ -6,10 +6,13 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
 @Module
+@InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
     @Provides
@@ -21,8 +24,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesReminderDataBase(context: Context): ReminderDatabase {
-        return Room.databaseBuilder(context, ReminderDatabase::class.java, "reminder_database").build()
+    fun providesReminderDataBase(app: Application): ReminderDatabase {
+        return Room.databaseBuilder(app, ReminderDatabase::class.java, "reminder_database").build()
     }
 
     @Provides

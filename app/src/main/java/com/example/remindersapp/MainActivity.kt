@@ -6,9 +6,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.remindersapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var factory: ReminderViewModelFactory
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        (application as RemindersApplication).remindersComponent.inject(this)
 
         reminderViewModel = ViewModelProvider(this, factory)[ReminderViewModel::class.java]
         displayAddReminderFragment()
