@@ -35,7 +35,10 @@ class UpdateReminderFragment : Fragment() {
 
         setSpinnerAdapter(binding.reminderTypeSpinner, R.array.reminder_type)
         setSpinnerValue(reminder)
-        attachListeners()
+
+        updateReminder(reminder)
+
+
         return binding.root
 
     }
@@ -60,18 +63,18 @@ class UpdateReminderFragment : Fragment() {
             binding.reminderTypeSpinner.setSelection(1)
     }
 
-    private fun attachListeners() {
-        updateReminder()
-    }
 
-    private fun updateReminder() {
+
+    private fun updateReminder(reminder: Reminder) {
         binding.addReminderButton.setOnClickListener {
             val hour = binding.timePicker.hour
             val minute = binding.timePicker.minute
             val type = binding.reminderTypeSpinner.selectedItem.toString()
 
             val timeReminder = TimeUtil.parseTimeFromTimePicker(hour, minute)
-            val reminder = Reminder(timeReminder, type, true)
+            reminder.type = type
+            reminder.time = timeReminder
+
 
             (activity as MainActivity).reminderViewModel.update(reminder)
 

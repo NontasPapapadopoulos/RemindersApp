@@ -38,7 +38,7 @@ class NotificationHandler(val context: Context?) {
 
         val intent = Intent(context, NotificationBroadcastReceiver::class.java)
         intent.putExtra("title", determineNotificationTitleFromReminderType(reminder))
-
+        intent.putExtra("time", reminder.time)
         val pendingIntent = PendingIntent.getBroadcast(context,
                                                        reminder.id,
                                                        intent,

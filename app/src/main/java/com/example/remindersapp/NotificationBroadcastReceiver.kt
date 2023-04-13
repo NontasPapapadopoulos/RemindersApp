@@ -13,7 +13,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context!!, "reminderChannel")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(intent!!.getStringExtra("title"))
-            .setContentText("")
+            .setContentText(intent!!.getStringExtra("time"))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         val notificationManager = NotificationManagerCompat.from(context)
