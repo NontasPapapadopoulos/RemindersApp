@@ -9,9 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.remindersapp.databinding.FragmentAddReminderBinding
+
+import com.example.remindersapp.TimeUtil.Companion.parseTimeFromTimePicker
 import com.example.remindersapp.databinding.FragmentUpdateReminderBinding
 import java.util.*
 
@@ -71,7 +70,7 @@ class UpdateReminderFragment : Fragment() {
             val minute = binding.timePicker.minute
             val type = binding.reminderTypeSpinner.selectedItem.toString()
 
-            val timeReminder = TimeUtil.parseTimeFromTimePicker(hour, minute)
+            val timeReminder = parseTimeFromTimePicker(hour, minute)
             reminder.type = type
             reminder.time = timeReminder
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.remindersapp.databinding.ActivityMainBinding
 
 
@@ -21,21 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         reminderViewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
-        displayAddReminderFragment()
-
     }
 
 
-
-    private fun displayAddReminderFragment() {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        val fragment = AddReminderFragment()
-
-        fragmentTransaction.add(R.id.frame, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-    }
 
 }
 

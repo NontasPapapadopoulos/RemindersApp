@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -89,18 +91,8 @@ class RemindersFragment : Fragment(), ReminderAdapter.OnItemClickListener {
 
 
     private fun openUpdateReminderFragment(reminder: Reminder) {
-        val fragmentManager: FragmentManager = parentFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        val fragment = UpdateReminderFragment()
-
-        val bundle = Bundle()
-        bundle.putSerializable("reminder", reminder )
-        fragment.arguments = bundle
-
-
-        fragmentTransaction.replace(R.id.frame, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
+        val bundle = bundleOf("reminder" to reminder)
+        findNavController().navigate(R.id.action_remindersFragment_to_updateReminderFragment, bundle)
     }
 
     override fun onItemClick(position: Int) {

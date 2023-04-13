@@ -12,6 +12,7 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.findNavController
 
 import com.example.remindersapp.TimeUtil.Companion.parseTimeFromTimePicker
 import com.example.remindersapp.databinding.FragmentAddReminderBinding
@@ -21,7 +22,6 @@ import java.util.*
 class AddReminderFragment : Fragment() {
 
     private lateinit var binding: FragmentAddReminderBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,15 +96,7 @@ class AddReminderFragment : Fragment() {
 
     private fun showRemindersFragment() {
         binding.showRemindersButton.setOnClickListener {
-
-            val fragmentManager: FragmentManager = parentFragmentManager
-            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val fragment = RemindersFragment()
-
-            fragmentTransaction.replace(R.id.frame, fragment)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
+            it.findNavController().navigate(R.id.action_addReminderFragment_to_remindersFragment)
         }
     }
-
 }
