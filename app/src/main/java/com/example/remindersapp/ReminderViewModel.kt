@@ -10,15 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class ReminderViewModel (application: Application): AndroidViewModel(application) {
+class ReminderViewModel (application: Application,
+                         private val repository: ReminderRepository): AndroidViewModel(application) {
 
     private val notificationHandler = NotificationHandler(application)
     val allReminders : LiveData<List<Reminder>>
-    private val repository: ReminderRepository
 
     init {
-        val dao = ReminderDatabase.getDatabase(application).getReminderDao()
-        repository = ReminderRepository(dao)
         allReminders = repository.allReminders
         notificationHandler.createNotificationChannel()
     }

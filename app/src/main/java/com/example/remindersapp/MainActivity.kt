@@ -6,13 +6,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.remindersapp.databinding.ActivityMainBinding
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-
+    @Inject
+    lateinit var factory: ReminderViewModelFactory
     lateinit var reminderViewModel: ReminderViewModel
-
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        reminderViewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
+        reminderViewModel = ViewModelProvider(this, factory)[ReminderViewModel::class.java]
         displayAddReminderFragment()
 
     }
