@@ -5,15 +5,16 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.example.remindersapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-
+    @Inject
+    lateinit var factory: ReminderViewModelFactory
     lateinit var reminderViewModel: ReminderViewModel
-
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,11 +22,13 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        reminderViewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
+
+        reminderViewModel = ViewModelProvider(this, factory)[ReminderViewModel::class.java]
+
     }
 
-
-
 }
+
+
 
 
